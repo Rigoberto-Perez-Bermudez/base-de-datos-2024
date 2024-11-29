@@ -1,6 +1,8 @@
 package fca.suayed.dao;
 import fca.suayed.dto.ClientDto;
+import fca.suayed.dto.OrderDto;
 import fca.suayed.dto.ProductDto;
+import fca.suayed.dto.ResponseDto;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
@@ -23,4 +25,11 @@ public interface StoreDao {
 
     @SqlUpdate("INSERT INTO clientes (nombre, apellido_paterno,apelldo_materno,rfc) VALUES(:c.nombre, :c.apellido_paterno, :c.apelldo_materno, :c.rfc)")
     void addClient(@BindBean("c") ClientDto ClientDto);
+
+    @RegisterBeanMapper(OrderDto.class)
+    @SqlQuery("SELECT * FROM ordenes")
+    List<OrderDto> getOrdenes();
+
+    @SqlUpdate("INSERT INTO ordenes (cliente_id, producto_id, cantidad) VALUES(:o.cliente_id, :o.producto_id, :o.cantidad, :o.fecha)")
+    void addOrder(@BindBean("o") OrderDto orderDto);
 }
